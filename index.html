@@ -13,7 +13,15 @@
         .main { display: flex; gap: 30px; }
         .left { flex: 2; }
         .right { flex: 1; }
-        .section-title { color: #00ccff; margin: 30px 0 15px; font-size: 1.7rem; }
+        .section-title { 
+            color: #00ccff; 
+            margin: 30px 0 15px; 
+            font-size: 1.7rem; 
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
         .file-card {
             background: #1a1a1a;
             padding: 18px;
@@ -23,25 +31,51 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            gap: 15px;
+            transition: all 0.3s ease;
+        }
+        .file-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 204, 255, 0.2);
+            border-color: #00ccff88;
+        }
+        
+        .file-info {
+            flex: 1;
             cursor: pointer;
         }
-        .download-btn {
-            background: #00ccff;
-            color: black;
-            padding: 10px 26px;
+        
+        .view-btn {
+            padding: 12px 32px;
+            background: #ff00aa;
+            color: white;
             border: none;
             border-radius: 50px;
             font-weight: bold;
             cursor: pointer;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(0, 204, 255, 0.3);
+            box-shadow: 0 4px 15px rgba(255, 0, 170, 0.4);
         }
-        .download-btn:hover {
-            background: #00ffff;
+        .view-btn:hover {
+            background: #ff33bb;
             transform: translateY(-3px) scale(1.08);
-            box-shadow: 0 8px 25px rgba(0, 255, 255, 0.5);
-            color: #000;
+            box-shadow: 0 8px 25px rgba(255, 0, 170, 0.6);
         }
+        
+        /* Scrollable Lists */
+        #software-list, #movies-list {
+            max-height: 680px;
+            overflow-y: auto;
+            padding-right: 10px;
+        }
+        #software-list::-webkit-scrollbar, #movies-list::-webkit-scrollbar {
+            width: 8px;
+        }
+        #software-list::-webkit-scrollbar-thumb, #movies-list::-webkit-scrollbar-thumb {
+            background: #00ccff;
+            border-radius: 10px;
+        }
+        
         .ad-placeholder {
             background: #1a1a1a;
             border: 2px dashed #ff00aa;
@@ -62,35 +96,94 @@
             border: 2px solid #00ccff;
             z-index: 9999;
         }
+        
+        /* Modal */
         .modal {
-            display: none; position: fixed; top: 0; left: 0;
-            width: 100%; height: 100%; background: rgba(0,0,0,0.9);
-            z-index: 2000; align-items: center; justify-content: center;
+            display: none; 
+            position: fixed; 
+            top: 0; left: 0;
+            width: 100%; height: 100%; 
+            background: rgba(0,0,0,0.92);
+            z-index: 2000; 
+            align-items: center; 
+            justify-content: center;
+        }
+        .modal-content {
+            background: #1a1a1a;
+            padding: 35px;
+            border-radius: 16px;
+            max-width: 560px;
+            width: 90%;
+            text-align: left;
+            border: 1px solid #00ccff44;
+            box-shadow: 0 20px 60px rgba(0, 204, 255, 0.3);
+        }
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #333;
+            padding-bottom: 15px;
+        }
+        .star-rating {
+            color: #ffd700;
+            font-size: 1.5rem;
+            margin: 10px 0;
+        }
+        .modal-description {
+            margin: 20px 0;
+            line-height: 1.7;
+            color: #ccc;
+            font-size: 1.02rem;
+        }
+        .close-btn {
+            background: none;
+            border: none;
+            color: #ff6666;
+            font-size: 1.8rem;
+            cursor: pointer;
+            padding: 5px 10px;
+        }
+        .download-btn {
+            background: #00ccff;
+            color: black;
+            padding: 14px 40px;
+            border: none;
+            border-radius: 50px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 204, 255, 0.3);
+            width: 100%;
+            margin-top: 25px;
+            font-size: 1.1rem;
+        }
+        .download-btn:hover {
+            background: #00ffff;
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 8px 25px rgba(0, 255, 255, 0.5);
         }
     </style>
 </head>
 <body>
-
     <header>
         <div style="max-width:1400px;margin:auto;display:flex;justify-content:space-between;align-items:center;">
             <div class="logo">SwiftHost</div>
-            <button class="download-btn" onclick="smartRedirect()" style="padding:12px 30px;">Upload File</button>
         </div>
     </header>
-
     <div class="container">
         <div class="main">
-
             <!-- LEFT SIDE -->
             <div class="left">
                 <h2 class="section-title">🔥 Trending Software</h2>
-                <div class="file-card">
+                <div class="file-card" onclick="showDetail('Windows 11 Pro Activated ISO', 'Software')">
                     <div class="file-info"><strong>Windows 11 Pro Activated ISO</strong><br><small>6.8 GB • 28k downloads</small></div>
-                    <button class="download-btn" onclick="smartRedirect()">Download</button>
+                    <button class="view-btn" onclick="event.stopImmediatePropagation(); showDetail('Windows 11 Pro Activated ISO', 'Software')">View</button>
                 </div>
-                <div class="file-card">
+                <div class="file-card" onclick="showDetail('Adobe Photoshop 2026 Full', 'Software')">
                     <div class="file-info"><strong>Adobe Photoshop 2026 Full</strong><br><small>5.2 GB • 19k downloads</small></div>
-                    <button class="download-btn" onclick="smartRedirect()">Download</button>
+                    <button class="view-btn" onclick="event.stopImmediatePropagation(); showDetail('Adobe Photoshop 2026 Full', 'Software')">View</button>
                 </div>
 
                 <div class="ad-placeholder">
@@ -99,13 +192,13 @@
                 </div>
 
                 <h2 class="section-title">🎬 Trending Movies</h2>
-                <div class="file-card">
+                <div class="file-card" onclick="showDetail('Latest_Movies_Collection_2026.rar', 'Movie')">
                     <div class="file-info"><strong>Latest_Movies_Collection_2026.rar</strong><br><small>18 GB • 9k downloads</small></div>
-                    <button class="download-btn" onclick="smartRedirect()">Download</button>
+                    <button class="view-btn" onclick="event.stopImmediatePropagation(); showDetail('Latest_Movies_Collection_2026.rar', 'Movie')">View</button>
                 </div>
-                <div class="file-card">
+                <div class="file-card" onclick="showDetail('Deadpool & Wolverine 2024', 'Movie')">
                     <div class="file-info"><strong>Deadpool & Wolverine 2024</strong><br><small>12.4 GB • 15k downloads</small></div>
-                    <button class="download-btn" onclick="smartRedirect()">Download</button>
+                    <button class="view-btn" onclick="event.stopImmediatePropagation(); showDetail('Deadpool & Wolverine 2024', 'Movie')">View</button>
                 </div>
 
                 <div class="ad-placeholder">
@@ -113,13 +206,13 @@
                     Paste your Adsterra Native Banner script here
                 </div>
             </div>
-
+            
             <!-- RIGHT SIDE -->
             <div class="right">
-                <h2 class="section-title">💾 All Software </h2>
+                <h2 class="section-title">💾 All Software</h2>
                 <div id="software-list"></div>
-
-                <h2 class="section-title">🎬 All Movies </h2>
+                
+                <h2 class="section-title">🎬 All Movies</h2>
                 <div id="movies-list"></div>
             </div>
         </div>
@@ -132,24 +225,100 @@
 
     <!-- Modal -->
     <div class="modal" id="detailModal">
-        <div style="background:#1a1a1a; padding:30px; border-radius:12px; max-width:500px; text-align:center;">
-            <h2 id="modalTitle"></h2>
-            <p id="modalSize"></p>
-            <button class="download-btn" onclick="downloadFromModal()" style="margin:20px 0; padding:12px 40px;">DOWNLOAD NOW</button>
-            <button onclick="closeModal()" style="background:none;border:none;color:#ff6666;cursor:pointer;">Close</button>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle" style="margin:0;color:#00ccff;"></h2>
+                <button class="close-btn" onclick="closeModal()">×</button>
+            </div>
+            
+            <div id="modalMeta" style="color:#aaa; margin-bottom:10px;"></div>
+            <div class="star-rating" id="modalRating"></div>
+            <p class="modal-description" id="modalDescription"></p>
+            
+            <button class="download-btn" onclick="downloadFromModal()">
+                DOWNLOAD NOW
+            </button>
+            
+            <button onclick="closeModal()" style="margin-top:15px;background:none;border:none;color:#ff6666;cursor:pointer;width:100%;padding:10px;">
+                Close
+            </button>
         </div>
     </div>
 
     <script>
-        const smartLink = "https://industriousslowly.com/z9x2uy0i2?key=20fea25ed03efa0e66284a9737c54228"; // GANTI DENGAN SMARTLINK ANDA
+        const smartLink = "https://industriousslowly.com/z9x2uy0i2?key=20fea25ed03efa0e66284a9737c54228";
 
         function smartRedirect() {
             window.location.href = smartLink;
         }
 
-        const softwareList = ["Windows 11 Pro Activated ISO","Adobe Photoshop 2026","Microsoft Office 2026","Corel Draw 2026","AutoCAD 2026","WinRAR 2026","Bandicam Full","IDM 6.42","Visual Studio 2026","NVIDIA Studio","VMware Workstation","PowerISO 2026","Sony Vegas Pro","FL Studio 21","Ableton Live 12","Kaspersky Premium","CleanMyMac 2026","CCleaner Pro","NordVPN","ExpressVPN","Unity Pro 2026","Unreal Engine 5","Blender 4.3","ZBrush 2026","Autodesk Maya"];
-        
-        const moviesList = ["Latest_Movies_Collection_2026.rar","Deadpool & Wolverine","Dune Part Two","Oppenheimer 4K","Barbie 2024","The Batman","Spider-Man Across The Spider-Verse","Avatar 3","Furiosa","Kingdom of the Planet of the Apes","All Marvel Collection","DC Universe Pack","Fast & Furious Complete","Harry Potter Full","Lord of the Rings 4K","Star Wars Saga","The Boys S4","House of the Dragon S2","Shogun 2024","Fallout 2024","Squid Game S2"];
+        // 30 Software Items
+        const softwareList = [
+            { name: "Windows 11 Pro Activated ISO", size: "6.8 GB", downloads: "28k", rating: 4.8, description: "Full activated Windows 11 Pro ISO with latest updates. Clean install and multilingual support." },
+            { name: "Adobe Photoshop 2026 Full", size: "5.2 GB", downloads: "19k", rating: 4.9, description: "Latest Adobe Photoshop with AI features, neural filters, and all extensions." },
+            { name: "Microsoft Office 2026", size: "4.8 GB", downloads: "32k", rating: 4.7, description: "Complete Office suite with Word, Excel, PowerPoint, and Outlook activated." },
+            { name: "Corel Draw 2026", size: "3.9 GB", downloads: "12k", rating: 4.6, description: "Professional graphic design and vector illustration software." },
+            { name: "AutoCAD 2026", size: "7.1 GB", downloads: "15k", rating: 4.8, description: "Industry-standard CAD software for 2D and 3D design." },
+            { name: "WinRAR 2026", size: "45 MB", downloads: "45k", rating: 4.9, description: "Powerful file compression and archive manager." },
+            { name: "Bandicam Full", size: "280 MB", downloads: "22k", rating: 4.5, description: "High quality screen recorder and gameplay capture." },
+            { name: "IDM 6.42 Full", size: "12 MB", downloads: "38k", rating: 4.7, description: "Internet Download Manager with browser integration." },
+            { name: "Visual Studio 2026", size: "8.5 GB", downloads: "11k", rating: 4.6, description: "Powerful IDE for developers with multiple language support." },
+            { name: "NVIDIA Studio Driver", size: "680 MB", downloads: "14k", rating: 4.8, description: "Optimized drivers for creative applications." },
+            { name: "VMware Workstation Pro", size: "1.2 GB", downloads: "9k", rating: 4.5, description: "Powerful virtualization software." },
+            { name: "PowerISO 2026", size: "8 MB", downloads: "17k", rating: 4.6, description: "CD/DVD/BD image file processing tool." },
+            { name: "Sony Vegas Pro 2026", size: "4.5 GB", downloads: "13k", rating: 4.4, description: "Professional video editing software." },
+            { name: "FL Studio 21 Signature", size: "1.1 GB", downloads: "16k", rating: 4.7, description: "Popular digital audio workstation for music production." },
+            { name: "Kaspersky Premium 2026", size: "180 MB", downloads: "21k", rating: 4.5, description: "Advanced antivirus and internet security." },
+            { name: "CleanMyMac 2026", size: "95 MB", downloads: "8k", rating: 4.6, description: "Mac system optimization and cleaning tool." },
+            { name: "CCleaner Pro", size: "75 MB", downloads: "25k", rating: 4.3, description: "System optimization and privacy tool." },
+            { name: "NordVPN 2026", size: "45 MB", downloads: "19k", rating: 4.8, description: "Fast and secure VPN service." },
+            { name: "ExpressVPN", size: "50 MB", downloads: "14k", rating: 4.7, description: "Premium VPN with strong encryption." },
+            { name: "Unity Pro 2026", size: "6.8 GB", downloads: "7k", rating: 4.5, description: "Professional game development engine." },
+            { name: "Unreal Engine 5", size: "12 GB", downloads: "10k", rating: 4.8, description: "Advanced real-time 3D creation tool." },
+            { name: "Blender 4.3", size: "980 MB", downloads: "18k", rating: 4.9, description: "Powerful open source 3D creation suite." },
+            { name: "ZBrush 2026", size: "2.8 GB", downloads: "6k", rating: 4.7, description: "Digital sculpting and painting software." },
+            { name: "Autodesk Maya 2026", size: "9.2 GB", downloads: "8k", rating: 4.6, description: "Professional 3D animation and modeling software." },
+            { name: "Adobe Premiere Pro 2026", size: "6.5 GB", downloads: "12k", rating: 4.8, description: "Industry leading video editing software." },
+            { name: "Ableton Live 12", size: "1.4 GB", downloads: "11k", rating: 4.7, description: "Popular DAW for live performance and music production." },
+            { name: "SketchUp Pro 2026", size: "450 MB", downloads: "9k", rating: 4.5, description: "3D modeling software for architecture." },
+            { name: "Cyberpunk 2077 Ultimate", size: "95 GB", downloads: "5k", rating: 4.4, description: "High-end game with all DLCs." },
+            { name: "Office 365 Activator", size: "15 MB", downloads: "23k", rating: 4.2, description: "Activator for Microsoft 365 subscription." },
+            { name: "Windows 10 Pro Lite", size: "3.2 GB", downloads: "27k", rating: 4.6, description: "Lightweight and optimized Windows 10 version." }
+        ];
+
+        // 30 Movies Items
+        const moviesList = [
+            { name: "Latest_Movies_Collection_2026.rar", size: "18 GB", downloads: "9k", rating: 4.4, description: "Massive collection of the newest blockbuster movies from 2025-2026." },
+            { name: "Deadpool & Wolverine 2024", size: "12.4 GB", downloads: "15k", rating: 4.9, description: "Action-packed superhero film starring Ryan Reynolds and Hugh Jackman in 4K." },
+            { name: "Dune Part Two", size: "14.8 GB", downloads: "18k", rating: 4.8, description: "Epic sci-fi masterpiece with stunning visuals." },
+            { name: "Oppenheimer 4K", size: "9.6 GB", downloads: "13k", rating: 4.7, description: "Christopher Nolan's masterpiece in stunning 4K UHD." },
+            { name: "Barbie 2024", size: "8.2 GB", downloads: "11k", rating: 4.3, description: "Colorful comedy adventure starring Margot Robbie." },
+            { name: "The Batman", size: "11.5 GB", downloads: "16k", rating: 4.6, description: "Dark and intense take on the Caped Crusader." },
+            { name: "Spider-Man Across The Spider-Verse", size: "10.8 GB", downloads: "14k", rating: 4.9, description: "Amazing animated Spider-Man adventure." },
+            { name: "Avatar 3", size: "15.2 GB", downloads: "12k", rating: 4.5, description: "James Cameron's epic sci-fi sequel." },
+            { name: "Furiosa", size: "9.8 GB", downloads: "10k", rating: 4.6, description: "Mad Max prequel with Anya Taylor-Joy." },
+            { name: "Kingdom of the Planet of the Apes", size: "11.1 GB", downloads: "13k", rating: 4.4, description: "Next chapter in the Planet of the Apes saga." },
+            { name: "All Marvel Collection", size: "85 GB", downloads: "7k", rating: 4.7, description: "Complete MCU movies collection up to 2026." },
+            { name: "DC Universe Pack", size: "72 GB", downloads: "8k", rating: 4.5, description: "All major DC movies and series in one pack." },
+            { name: "Fast & Furious Complete", size: "68 GB", downloads: "9k", rating: 4.3, description: "All Fast & Furious movies in high quality." },
+            { name: "Harry Potter Full Collection", size: "95 GB", downloads: "11k", rating: 4.8, description: "All Harry Potter movies in 4K." },
+            { name: "Lord of the Rings 4K", size: "58 GB", downloads: "10k", rating: 4.9, description: "Extended edition in stunning 4K quality." },
+            { name: "Star Wars Saga", size: "110 GB", downloads: "12k", rating: 4.7, description: "Complete Star Wars saga including spin-offs." },
+            { name: "The Boys S4", size: "28 GB", downloads: "15k", rating: 4.6, description: "Latest season of the hit superhero series." },
+            { name: "House of the Dragon S2", size: "32 GB", downloads: "14k", rating: 4.8, description: "Game of Thrones prequel series." },
+            { name: "Shogun 2024", size: "45 GB", downloads: "13k", rating: 4.9, description: "Award-winning historical drama series." },
+            { name: "Fallout 2024", size: "26 GB", downloads: "16k", rating: 4.7, description: "Popular post-apocalyptic series." },
+            { name: "Squid Game S2", size: "22 GB", downloads: "18k", rating: 4.5, description: "Highly anticipated second season." },
+            { name: "The Bear S3", size: "18 GB", downloads: "8k", rating: 4.6, description: "Award-winning comedy-drama series." },
+            { name: "House of the Dragon S1-2", size: "65 GB", downloads: "10k", rating: 4.8, description: "Both seasons of the Game of Thrones spin-off." },
+            { name: "Rebel Moon", size: "14 GB", downloads: "7k", rating: 4.2, description: "Zack Snyder's sci-fi epic." },
+            { name: "The Killer", size: "8.5 GB", downloads: "9k", rating: 4.4, description: "Action thriller starring Michael Fassbender." },
+            { name: "Joker 2", size: "13.5 GB", downloads: "11k", rating: 4.3, description: "Sequel to the Oscar-winning Joker movie." },
+            { name: "Dune Part One & Two", size: "28 GB", downloads: "12k", rating: 4.8, description: "Both Dune movies in 4K." },
+            { name: "Godzilla x Kong", size: "10.2 GB", downloads: "14k", rating: 4.5, description: "Epic monster showdown." },
+            { name: "Furiosa & Mad Max", size: "24 GB", downloads: "8k", rating: 4.6, description: "Mad Max franchise collection." },
+            { name: "The Marvels", size: "9.8 GB", downloads: "10k", rating: 4.1, description: "Marvel superhero team-up movie." }
+        ];
 
         function generateLists() {
             const sw = document.getElementById('software-list');
@@ -157,10 +326,11 @@
                 const div = document.createElement('div');
                 div.className = 'file-card';
                 div.innerHTML = `
-                    <div onclick="showDetail('${item}', 'Software')">
-                        <strong>${item}</strong><br><small>3-12 GB</small>
+                    <div class="file-info" onclick="showDetail('${item.name}', 'Software')">
+                        <strong>${item.name}</strong><br>
+                        <small>${item.size} • ${item.downloads} downloads</small>
                     </div>
-                    <button class="download-btn" onclick="event.stopImmediatePropagation(); smartRedirect()">Download</button>
+                    <button class="view-btn" onclick="event.stopImmediatePropagation(); showDetail('${item.name}', 'Software')">View</button>
                 `;
                 sw.appendChild(div);
             });
@@ -170,18 +340,31 @@
                 const div = document.createElement('div');
                 div.className = 'file-card';
                 div.innerHTML = `
-                    <div onclick="showDetail('${item}', 'Movie')">
-                        <strong>${item}</strong><br><small>8-25 GB</small>
+                    <div class="file-info" onclick="showDetail('${item.name}', 'Movie')">
+                        <strong>${item.name}</strong><br>
+                        <small>${item.size} • ${item.downloads} downloads</small>
                     </div>
-                    <button class="download-btn" onclick="event.stopImmediatePropagation(); smartRedirect()">Download</button>
+                    <button class="view-btn" onclick="event.stopImmediatePropagation(); showDetail('${item.name}', 'Movie')">View</button>
                 `;
                 mv.appendChild(div);
             });
         }
 
         function showDetail(title, type) {
-            document.getElementById('modalTitle').textContent = title;
-            document.getElementById('modalSize').textContent = type === 'Software' ? 'Activated Version' : '1080p / 4K Quality';
+            let item = type === 'Software' 
+                ? softwareList.find(s => s.name === title) 
+                : moviesList.find(m => m.name === title);
+            
+            if (!item) return;
+
+            document.getElementById('modalTitle').textContent = item.name;
+            document.getElementById('modalMeta').textContent = `${item.size} • ${item.downloads} downloads`;
+            
+            const stars = '★'.repeat(Math.floor(item.rating)) + (item.rating % 1 >= 0.5 ? '½' : '');
+            document.getElementById('modalRating').innerHTML = `${stars} <span style="color:#888;font-size:1rem;">(${item.rating})</span>`;
+            
+            document.getElementById('modalDescription').textContent = item.description;
+            
             document.getElementById('detailModal').style.display = 'flex';
         }
 
@@ -194,7 +377,7 @@
             document.getElementById('detailModal').style.display = 'none';
         }
 
-        generateLists();
+        window.onload = generateLists;
     </script>
 </body>
 </html>
