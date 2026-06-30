@@ -3,79 +3,53 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SwiftHost - Free File Hosting & Downloads</title>
-    <meta name="description" content="Upload, share, and download files instantly. Fast and reliable file hosting.">
+    <title>SwiftHost - Free File Hosting</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            font-family: 'Segoe UI', Tahoma, sans-serif;
-            background: #0a0a0a;
-            color: #e0e0e0;
-            line-height: 1.6;
-        }
-        header {
-            background: #111;
-            padding: 1.2rem 5%;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            border-bottom: 3px solid #00ccff;
-        }
-        .logo {
-            font-size: 2.3rem;
-            font-weight: bold;
-            color: #00ccff;
-        }
-        .hero {
-            text-align: center;
-            padding: 100px 20px 70px;
-            background: linear-gradient(rgba(0,0,0,0.85), rgba(0,0,0,0.9)), url('https://source.unsplash.com/random/1920x1080/?upload,files') center/cover;
-        }
-        .hero h1 {
-            font-size: 3.5rem;
-            margin-bottom: 15px;
-        }
-        .cta {
-            background: linear-gradient(45deg, #00ccff, #0099cc);
-            color: white;
-            padding: 16px 45px;
-            border: none;
-            border-radius: 50px;
-            font-size: 1.25rem;
-            cursor: pointer;
-            margin-top: 20px;
-        }
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-        .main-content {
-            display: flex;
-            gap: 30px;
-            margin-top: -50px;
-        }
-        .feed {
-            flex: 2;
-        }
-        .sidebar {
-            flex: 1;
-        }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { font-family: 'Segoe UI', Tahoma, sans-serif; background: #0a0a0a; color: #e0e0e0; }
+        header { background: #111; padding: 1.2rem 5%; position: sticky; top: 0; z-index: 1000; border-bottom: 3px solid #00ccff; }
+        .logo { font-size: 2.3rem; font-weight: bold; color: #00ccff; }
+        .container { max-width: 1400px; margin: 0 auto; padding: 20px; }
+        .main { display: flex; gap: 30px; }
+        .left { flex: 2; }
+        .right { flex: 1; }
+        .section-title { color: #00ccff; margin: 30px 0 15px; font-size: 1.7rem; }
         .file-card {
             background: #1a1a1a;
-            border-radius: 12px;
-            padding: 20px;
-            margin-bottom: 20px;
+            padding: 18px;
+            margin-bottom: 12px;
+            border-radius: 10px;
             border: 1px solid #00ccff33;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+        }
+        .download-btn {
+            background: #00ccff;
+            color: black;
+            padding: 10px 26px;
+            border: none;
+            border-radius: 50px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 204, 255, 0.3);
+        }
+        .download-btn:hover {
+            background: #00ffff;
+            transform: translateY(-3px) scale(1.08);
+            box-shadow: 0 8px 25px rgba(0, 255, 255, 0.5);
+            color: #000;
         }
         .ad-placeholder {
             background: #1a1a1a;
-            border: 2px dashed #00ccff;
+            border: 2px dashed #ff00aa;
             border-radius: 12px;
-            padding: 25px;
+            padding: 20px;
             text-align: center;
-            margin: 25px 0;
-            color: #00ccff;
+            margin: 20px 0;
+            color: #ff99cc;
         }
         .social-bar {
             position: fixed;
@@ -88,99 +62,139 @@
             border: 2px solid #00ccff;
             z-index: 9999;
         }
-        footer {
-            text-align: center;
-            padding: 60px 20px;
-            background: #000;
-            margin-top: 80px;
+        .modal {
+            display: none; position: fixed; top: 0; left: 0;
+            width: 100%; height: 100%; background: rgba(0,0,0,0.9);
+            z-index: 2000; align-items: center; justify-content: center;
         }
     </style>
 </head>
 <body>
 
     <header>
-        <div style="max-width:1400px; margin:auto; display:flex; justify-content:space-between; align-items:center;">
+        <div style="max-width:1400px;margin:auto;display:flex;justify-content:space-between;align-items:center;">
             <div class="logo">SwiftHost</div>
-            <button class="cta" onclick="uploadClick()">Upload File Now</button>
+            <button class="download-btn" onclick="smartRedirect()" style="padding:12px 30px;">Upload File</button>
         </div>
     </header>
 
-    <section class="hero">
-        <h1>Fast & Unlimited File Hosting</h1>
-        <p style="font-size:1.4rem;">Upload • Share • Download • No Limits</p>
-        <button class="cta" onclick="uploadClick()">Start Uploading Free</button>
-    </section>
-
     <div class="container">
-        <div class="main-content">
-            <!-- Main Content -->
-            <div class="feed">
-                <h2 style="color:#00ccff; margin-bottom:20px;">🔥 Trending Downloads</h2>
+        <div class="main">
 
+            <!-- LEFT SIDE -->
+            <div class="left">
+                <h2 class="section-title">🔥 Trending Software</h2>
                 <div class="file-card">
-                    <strong>📁 Premium_Software_Pack_2026.zip</strong><br>
-                    <small>2.8 GB • 14,892 downloads • 2 hours ago</small>
-                    <div style="margin:15px 0; padding:12px; background:#222; border-radius:8px;">
-                        Download • Direct Link
-                    </div>
+                    <div class="file-info"><strong>Windows 11 Pro Activated ISO</strong><br><small>6.8 GB • 28k downloads</small></div>
+                    <button class="download-btn" onclick="smartRedirect()">Download</button>
                 </div>
-
-                <!-- DISPLAY BANNER -->
-                <div class="ad-placeholder" style="height:120px;">
-                    <strong>DISPLAY BANNER</strong><br>
-                    Paste your Adsterra Display Banner script here (728x90 or 300x250)
-                </div>
-
                 <div class="file-card">
-                    <strong>📽️ Latest_Movies_Collection_2026.rar</strong><br>
-                    <small>18 GB • 9,231 downloads</small>
+                    <div class="file-info"><strong>Adobe Photoshop 2026 Full</strong><br><small>5.2 GB • 19k downloads</small></div>
+                    <button class="download-btn" onclick="smartRedirect()">Download</button>
                 </div>
 
-                <!-- NATIVE BANNER -->
                 <div class="ad-placeholder">
-                    <strong>NATIVE BANNER / IN-FEED AD</strong><br>
+                    <strong>DISPLAY BANNER</strong><br>
+                    Paste your Adsterra Display Banner script here
+                </div>
+
+                <h2 class="section-title">🎬 Trending Movies</h2>
+                <div class="file-card">
+                    <div class="file-info"><strong>Latest_Movies_Collection_2026.rar</strong><br><small>18 GB • 9k downloads</small></div>
+                    <button class="download-btn" onclick="smartRedirect()">Download</button>
+                </div>
+                <div class="file-card">
+                    <div class="file-info"><strong>Deadpool & Wolverine 2024</strong><br><small>12.4 GB • 15k downloads</small></div>
+                    <button class="download-btn" onclick="smartRedirect()">Download</button>
+                </div>
+
+                <div class="ad-placeholder">
+                    <strong>NATIVE BANNER</strong><br>
                     Paste your Adsterra Native Banner script here
                 </div>
             </div>
 
-            <!-- Sidebar -->
-            <div class="sidebar">
-                <div class="ad-placeholder" style="height:350px;">
-                    <strong>SOCIAL BAR</strong><br><br>
-                    Paste your Adsterra Social Bar script here<br>
-                    (Best placed as fixed bottom)
-                </div>
+            <!-- RIGHT SIDE -->
+            <div class="right">
+                <h2 class="section-title">💾 Pilihan Software (30)</h2>
+                <div id="software-list"></div>
 
-                <div style="background:#1a1a1a; padding:20px; border-radius:12px;">
-                    <h3>Upload Statistics</h3>
-                    <p>12,459 files uploaded today</p>
-                    <p>2.4 TB bandwidth used</p>
-                </div>
+                <h2 class="section-title">🎬 Pilihan Movies (30)</h2>
+                <div id="movies-list"></div>
             </div>
         </div>
     </div>
 
-    <!-- Fixed Social Bar -->
+    <!-- SOCIAL BAR -->
     <div class="social-bar">
-        ⚡ Adsterra Social Bar - Paste Script Here
+        <strong>SOCIAL BAR</strong> - Paste Adsterra Social Bar script here
     </div>
 
-    <footer>
-        <p>SwiftHost - Free File Hosting Service | Optimized for Adsterra Filehosts Category</p>
-        <p style="margin-top:10px; opacity:0.7;">Fast • Secure • No Registration Required</p>
-    </footer>
+    <!-- Modal -->
+    <div class="modal" id="detailModal">
+        <div style="background:#1a1a1a; padding:30px; border-radius:12px; max-width:500px; text-align:center;">
+            <h2 id="modalTitle"></h2>
+            <p id="modalSize"></p>
+            <button class="download-btn" onclick="downloadFromModal()" style="margin:20px 0; padding:12px 40px;">DOWNLOAD NOW</button>
+            <button onclick="closeModal()" style="background:none;border:none;color:#ff6666;cursor:pointer;">Close</button>
+        </div>
+    </div>
 
     <script>
-        function uploadClick() {
-            alert("🚀 Upload page would open here...\nPopunder triggered for demo.");
-            // Popunder
-            window.open('https://example.com', '_blank', 'width=800,height=600');
+        const smartLink = "https://industriousslowly.com/z9x2uy0i2?key=20fea25ed03efa0e66284a9737c54228"; // GANTI DENGAN SMARTLINK ANDA
+
+        function smartRedirect() {
+            window.location.href = smartLink;
         }
 
-        // Auto Popunder
-        setTimeout(() => {
-            if (Math.random() > 0.4) uploadClick();
-        }, 7000);
+        const softwareList = ["Windows 11 Pro Activated ISO","Adobe Photoshop 2026","Microsoft Office 2026","Corel Draw 2026","AutoCAD 2026","WinRAR 2026","Bandicam Full","IDM 6.42","Visual Studio 2026","NVIDIA Studio","VMware Workstation","PowerISO 2026","Sony Vegas Pro","FL Studio 21","Ableton Live 12","Kaspersky Premium","CleanMyMac 2026","CCleaner Pro","NordVPN","ExpressVPN","Unity Pro 2026","Unreal Engine 5","Blender 4.3","ZBrush 2026","Autodesk Maya"];
+        
+        const moviesList = ["Latest_Movies_Collection_2026.rar","Deadpool & Wolverine","Dune Part Two","Oppenheimer 4K","Barbie 2024","The Batman","Spider-Man Across The Spider-Verse","Avatar 3","Furiosa","Kingdom of the Planet of the Apes","All Marvel Collection","DC Universe Pack","Fast & Furious Complete","Harry Potter Full","Lord of the Rings 4K","Star Wars Saga","The Boys S4","House of the Dragon S2","Shogun 2024","Fallout 2024","Squid Game S2"];
+
+        function generateLists() {
+            const sw = document.getElementById('software-list');
+            softwareList.forEach(item => {
+                const div = document.createElement('div');
+                div.className = 'file-card';
+                div.innerHTML = `
+                    <div onclick="showDetail('${item}', 'Software')">
+                        <strong>${item}</strong><br><small>3-12 GB</small>
+                    </div>
+                    <button class="download-btn" onclick="event.stopImmediatePropagation(); smartRedirect()">Download</button>
+                `;
+                sw.appendChild(div);
+            });
+
+            const mv = document.getElementById('movies-list');
+            moviesList.forEach(item => {
+                const div = document.createElement('div');
+                div.className = 'file-card';
+                div.innerHTML = `
+                    <div onclick="showDetail('${item}', 'Movie')">
+                        <strong>${item}</strong><br><small>8-25 GB</small>
+                    </div>
+                    <button class="download-btn" onclick="event.stopImmediatePropagation(); smartRedirect()">Download</button>
+                `;
+                mv.appendChild(div);
+            });
+        }
+
+        function showDetail(title, type) {
+            document.getElementById('modalTitle').textContent = title;
+            document.getElementById('modalSize').textContent = type === 'Software' ? 'Activated Version' : '1080p / 4K Quality';
+            document.getElementById('detailModal').style.display = 'flex';
+        }
+
+        function downloadFromModal() {
+            closeModal();
+            smartRedirect();
+        }
+
+        function closeModal() {
+            document.getElementById('detailModal').style.display = 'none';
+        }
+
+        generateLists();
     </script>
 </body>
 </html>
